@@ -8,7 +8,7 @@ const ctx = cv.getContext('2d');
 const $   = s => document.querySelector(s);
 const $$  = s => Array.from(document.querySelectorAll(s));
 
-const opts = { rgb: true, names: true, status: true, paths: false };
+const opts = { rgb: false, names: true, status: true, paths: false };
 
 /* ===========================================================
    CÂMERA
@@ -436,7 +436,7 @@ function frame(now) {
   // fundo
   if (!bgCache || bgCache.w !== cw || bgCache.h !== ch) {
     const g = ctx.createRadialGradient(cw / 2, ch * .42, 40, cw / 2, ch * .42, Math.max(cw, ch) * .8);
-    g.addColorStop(0, '#141a2e'); g.addColorStop(.6, '#090b13'); g.addColorStop(1, '#05060a');
+    g.addColorStop(0, '#f7f5f1'); g.addColorStop(.6, '#ebe8e2'); g.addColorStop(1, '#dedad3');
     bgCache = { g, w: cw, h: ch };
   }
   ctx.fillStyle = bgCache.g; ctx.fillRect(0, 0, cw, ch);

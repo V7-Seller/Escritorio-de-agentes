@@ -428,3 +428,71 @@ button{font-family:inherit;color:inherit}
 .rn-fora{color:var(--tx3,#646d84);font-size:11.5px;line-height:1.6;margin-top:14px;
   border-top:1px solid var(--line,#262b3d);padding-top:12px}
 .rn-custo{color:var(--tx3,#646d84);font-size:11px}
+
+/* ===========================================================
+   TEMA CLARO — Operação N7
+   Escritório iluminado: branco, cinza claro e laranja.
+   Para voltar ao tema escuro, apague este bloco.
+   =========================================================== */
+:root{
+  --bg:        #f4f2ee;
+  --bg-2:      #f7f6f3;
+  --panel:     #ffffff;
+  --panel-2:   #f6f5f2;
+  --line:      #e3e0da;
+  --txt:       #1f2328;
+  --txt-dim:   #6b7280;
+
+  --acc-1:    #f97316;
+  --acc-2:    #fb923c;
+  --acc-3:    #c2410c;
+  --alt-1:    #0284c7;
+  --alt-2:    #2563eb;
+
+  --ok:        #16a34a;
+  --warn:      #d97706;
+  --off:       #9ca3af;
+  --shadow:    0 12px 32px rgba(40,30,20,.14);
+  --card:      #f6f5f2;
+  --tx3:       #6b7280;
+}
+#topbar{background:#ffffff;box-shadow:0 2px 14px rgba(0,0,0,.06)}
+#topbar::after{background:var(--acc-1);animation:none;height:3px}
+.brand .bolt{filter:none}
+.brand .bolt rect{fill:var(--acc-1)}
+.brand-txt strong{background:none;-webkit-background-clip:border-box;background-clip:border-box;color:var(--txt)}
+#clock{color:var(--acc-1);text-shadow:none}
+.btn:hover,.mini:hover,.zbtn:hover{background:#efece6;border-color:#d6d1c8}
+.btn.primary{box-shadow:0 5px 16px rgba(249,115,22,.3)}
+.btn.rec{background:linear-gradient(135deg,#f97316,#ea580c)}
+#stage{background:radial-gradient(1100px 620px at 50% 40%,#f7f5f1 0%,#ebe8e2 62%,#dedad3 100%)}
+.roomlegend .rl,#fps{background:rgba(255,255,255,.9);color:var(--txt-dim)}
+.roomlegend .dot{box-shadow:none}
+.zbtn{background:rgba(255,255,255,.95)}
+.tooltip{background:rgba(255,255,255,.98);border-color:var(--line)}
+.toast{background:#ffffff;border-color:var(--line);color:var(--txt)}
+.tabpane::-webkit-scrollbar-thumb{background:#d6d1c8}
+.filterbar input:focus,.frow input:focus,.frow select:focus,.frow textarea:focus,
+.inline input:focus,.cv-envio textarea:focus{border-color:var(--acc-1)}
+.card:hover,.hcard:hover,.roomcard:hover{border-color:#d6d1c8}
+.card.s-trabalhando::before,.card.s-descanso::before,.card.s-reuniao::before{box-shadow:none}
+.card .av,.mon-av,.mhead canvas{background:#f1efea}
+.chip.active,.seg button.on,.cv-op.on{background:rgba(249,115,22,.1)}
+.hcard .why{color:#4b5563}
+.opt{color:#374151}
+.monitor{background:#f4f2ee}
+.mon-top{background:#ffffff}
+.mon-corpo{background:#f4f2ee}
+.mon-vazio .dica{color:var(--txt-dim)}
+.conversa{background:#faf9f7}
+.cv-baixo{background:#ffffff}
+.cv-msg.voce{background:#fff1e6;border-color:#fed7aa}
+.cv-msg.sistema{color:#92400e;background:#fffbeb;border-color:#fde68a}
+.cv-msg code{background:rgba(0,0,0,.06)}
+.modal{background:rgba(30,25,20,.35)}
+.modal-card{background:#ffffff;border-color:var(--line)}
+#reuniao{background:rgba(30,25,20,.45)}
+.rn-top{background:linear-gradient(90deg,rgba(249,115,22,.1),transparent)}
+.rn-brief{background:linear-gradient(180deg,rgba(249,115,22,.08),transparent);border-color:rgba(249,115,22,.35)}
+.rn-fala{border-left-color:var(--acc-1)}
+.rn-brief h3,.rn-fase{color:var(--acc-1)}

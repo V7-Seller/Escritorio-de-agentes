@@ -8,11 +8,14 @@ const WORLD = (() => {
 
   const VOID = 0, FLOOR = 1, WALL = 2, DOOR = 3;
 
-  /* ---------- paleta ---------- */
+  /* ---------- paleta ----------
+     Tema claro da Operação N7: paredes laranja, piso de cimento claro,
+     divisórias de vidro com perfil preto.                                */
   const C = {
-    fire1: '#7c6cff', fire2: '#9d8cff', fire3: '#f59e0b',
-    volt1: '#38bdf8', volt2: '#2563eb',
-    dark:  '#0b0d15', wall: '#1b2033', wallTop: '#2a3149'
+    fire1: '#f97316', fire2: '#fb923c', fire3: '#f59e0b',
+    volt1: '#0ea5e9', volt2: '#2563eb',
+    dark:  '#3a3f47', wall: '#ee6c1d', wallTop: '#f6f3ee',
+    parapeito: '#f3f1ec', perfil: '#2f3237', rodape: '#faf8f4'
   };
 
   /* ---------- salas ---------- */
@@ -22,7 +25,7 @@ const WORLD = (() => {
       bx: 0, by: 0, bw: 15, bh: 19,
       x1: 1, y1: 1, x2: 13, y2: 17,
       accent: C.fire1,
-      floorA: '#241a24', floorB: '#2c2030',
+      floorA: '#d8d1c6', floorB: '#d4cdc2',
       desc: 'Sua sala. Vidro fumê, troféu, quadro de ideias e duas estações premium.'
     },
     servico: {
@@ -30,7 +33,7 @@ const WORLD = (() => {
       bx: 18, by: 0, bw: 30, bh: 19,
       x1: 19, y1: 1, x2: 46, y2: 17,
       accent: C.volt1,
-      floorA: '#111725', floorB: '#151c2e',
+      floorA: '#d2d1cd', floorB: '#cecdc9',
       desc: 'Área ampla de operação. 18 estações gamer com RGB — é aqui que o trabalho acontece.'
     },
     lounge: {
@@ -38,7 +41,7 @@ const WORLD = (() => {
       bx: 0, by: 22, bw: 30, bh: 12,
       x1: 1, y1: 23, x2: 28, y2: 32,
       accent: C.fire3,
-      floorA: '#1d1630', floorB: '#241b3a',
+      floorA: '#d6cfc4', floorB: '#d2cbc0',
       desc: 'Sala fechada, separada da operação. Arcade, pebolim, sofás, TV e bar.'
     },
     reuniao: {
@@ -46,13 +49,13 @@ const WORLD = (() => {
       bx: 32, by: 22, bw: 16, bh: 12,
       x1: 33, y1: 23, x2: 46, y2: 32,
       accent: '#a855f7',
-      floorA: '#14182a', floorB: '#191e34',
+      floorA: '#d0d0ce', floorB: '#cccbc9',
       desc: 'Mesa de oito lugares e painel de LED. É aqui que os agentes se reúnem.'
     },
     corredor: {
       id: 'corredor', name: 'RECEPÇÃO & CIRCULAÇÃO', short: 'Corredor',
       accent: '#64748b',
-      floorA: '#10131f', floorB: '#141827',
+      floorA: '#d9d8d4', floorB: '#d5d4d0',
       desc: 'Recepção, elevador e a circulação entre as salas.'
     }
   };
@@ -185,8 +188,22 @@ const WORLD = (() => {
         if (k !== FLOOR && k !== DOOR) continue;
         const r = ROOMS[roomOf[idx(x, y)]] || ROOMS.corredor;
         let col = ((x + y) & 1) ? r.floorA : r.floorB;
-        if (k === DOOR) col = ISO.shade(r.accent, -0.62);
-        ISO.tile(c, x, y, col, 'rgba(255,255,255,.028)');
+        if (k === DOOR) col = '#c9c7c2';
+        ISO.tile(c, x, y, col, 'rgba(0,0,0,.035)');
+      }
+    }
+    // pintinhas do cimento queimado (posição fixa por tile, sem sorteio)
+    for (let y = 0; y < H; y++) {
+      for (let x = 0; x < W; x++) {
+        const k = kind[idx(x, y)];
+        if (k !== FLOOR && k !== DOOR) continue;
+        for (let i = 0; i < 5; i++) {
+          const s = Math.sin(x * 12.9898 + y * 78.233 + i * 37.719) * 43758.5453;
+          const fx = s - Math.floor(s), fy = (s * 7.13) - Math.floor(s * 7.13);
+          const p = ISO.toScreen(x + .1 + fx * .8, y + .1 + fy * .8);
+          c.fillStyle = i % 2 ? 'rgba(0,0,0,.07)' : 'rgba(255,255,255,.35)';
+          c.fillRect(p.x, p.y, 1.6, 1.2);
+        }
       }
     }
     // faixa pintada no corredor (guia da recepção até as salas)
@@ -194,7 +211,7 @@ const WORLD = (() => {
     c.globalAlpha = .5;
     for (let x = 2; x <= 45; x++) {
       if (walkable(x, 20) && roomAt(x, 20) === 'corredor')
-        ISO.tile(c, x, 20, ISO.rgba(C.fire2, .1));
+        ISO.tile(c, x, 20, ISO.rgba(C.fire1, .16));
     }
     c.restore();
     pisoCache = { cv, x: x0, y: y0 };
@@ -203,6 +220,7 @@ const WORLD = (() => {
   function drawFloor(ctx, t) {
     if (!pisoCache) montaPiso();
     ctx.drawImage(pisoCache.cv, pisoCache.x, pisoCache.y);
+    if (!t) return;     // RGB desligado: piso limpo, sem reflexo colorido
 
     // brilho RGB refletido no piso da sala de serviço
     ctx.save();
@@ -227,7 +245,7 @@ const WORLD = (() => {
       ctx.save();
       ctx.textAlign = 'center';
       ctx.font = '600 13px Barlow Semi Condensed, sans-serif';
-      ctx.fillStyle = ISO.rgba(r.accent, .34);
+      ctx.fillStyle = 'rgba(70,74,82,.42)';
       ctx.letterSpacing = '4px';
       ctx.fillText(r.name, p.x, p.y);
       ctx.restore();
@@ -256,7 +274,8 @@ const WORLD = (() => {
     }
 
     const P = ISO.toScreen;
-    const base = C.wall;
+    // parede cheia é laranja; divisória baixa (com vidro em cima) é branca
+    const base = occ ? C.parapeito : C.wall;
 
     const faces = [];
     if (showLeft)  faces.push({ o: 'n', pts: [P(x, y+1, h), P(x+1, y+1, h), P(x+1, y+1, 0), P(x, y+1, 0)], sh: -0.05 });
@@ -270,14 +289,19 @@ const WORLD = (() => {
       let g = cacheGrad.get(ck);
       if (!g) {
         g = ctx.createLinearGradient(0, f.pts[0].y, 0, f.pts[2].y);
-        g.addColorStop(0, ISO.shade(base, f.sh + 0.06));
-        g.addColorStop(1, ISO.shade(base, f.sh - 0.28));
+        g.addColorStop(0, ISO.shade(base, f.sh + 0.04));
+        g.addColorStop(1, ISO.shade(base, f.sh - 0.1));
         cacheGrad.set(ck, g);
       }
       ISO.quad(ctx, f.pts, g);
 
-      // rodapé com fita de LED
-      if (rgbOn) {
+      // rodapé branco (tema claro) ou fita de LED (RGB ligado)
+      if (!rgbOn) {
+        ISO.quad(ctx, [f.pts[3], f.pts[2],
+                       { x: f.pts[2].x, y: f.pts[2].y - 6 },
+                       { x: f.pts[3].x, y: f.pts[3].y - 6 }],
+                 ISO.shade(C.rodape, f.sh * .4));
+      } else {
         const hue = (t * 34 + (x + y) * 11) % 360;
         const neon = ISO.hsl(hue, 92, 58);
         const y0 = f.pts[3].y, y1 = f.pts[0].y;
@@ -295,10 +319,10 @@ const WORLD = (() => {
     }
 
     // topo
-    ISO.plane(ctx, x, y, 1, 1, h, occ ? ISO.rgba('#8fa4d8', .28) : C.wallTop);
+    ISO.plane(ctx, x, y, 1, 1, h, occ ? '#e4e0d9' : C.wallTop);
 
     if (occ && detalhe) {
-      // vidro fumê acima do parapeito
+      // vidro claro acima do parapeito, com perfil preto (estilo aquário)
       for (const f of faces) {
         const top = [
           P(f.o === 'n' ? x : x + 1, f.o === 'n' ? y + 1 : y,     WALL_H),
@@ -306,10 +330,15 @@ const WORLD = (() => {
           P(x + 1, y + 1, h),
           P(f.o === 'n' ? x : x + 1, f.o === 'n' ? y + 1 : y,     h)
         ];
-        ISO.quad(ctx, top, ISO.rgba('#9fc4ff', .085));
-        ISO.quad(ctx, top, null, ISO.rgba('#bcd8ff', .12));
+        ISO.quad(ctx, top, ISO.rgba('#cfe6f3', .22));
+        ISO.quad(ctx, [top[0], top[1], P(x + 1, y + 1, WALL_H - 3),
+                       P(f.o === 'n' ? x : x + 1, f.o === 'n' ? y + 1 : y, WALL_H - 3)], C.perfil);
+        // montante vertical na emenda de cada placa de vidro
+        ISO.quad(ctx, [top[1], P(x + 1, y + 1, h),
+                       { x: P(x + 1, y + 1, h).x - 1.5, y: P(x + 1, y + 1, h).y },
+                       { x: top[1].x - 1.5, y: top[1].y }], C.perfil);
       }
-      ISO.plane(ctx, x, y, 1, 1, WALL_H, ISO.rgba(room.accent, rgbOn ? .30 : .12));
+      ISO.plane(ctx, x, y, 1, 1, WALL_H, rgbOn ? ISO.rgba(room.accent, .30) : ISO.rgba('#cfe6f3', .18));
     }
 
     // trilho de LED no topo da parede — é a cara do lugar, nunca some
@@ -356,10 +385,12 @@ const WORLD = (() => {
   function drawDoorTile(ctx, x, y, t) {
     const d = DOORS.find(d => d.x === x && d.y === y);
     if (!d) return;
-    const hue = (t * 34 + (x + y) * 11) % 360;
-    const neon = ISO.hsl(hue, 95, 60);
     const P = ISO.toScreen;
     const h = 96;
+
+    if (!t) return;     // tema claro: vão livre, sem batente de neon
+    const hue = (t * 34 + (x + y) * 11) % 360;
+    const neon = ISO.hsl(hue, 95, 60);
 
     // batentes laterais
     ctx.save();

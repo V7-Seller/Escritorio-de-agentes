@@ -398,26 +398,32 @@ const AVATAR = (() => {
     ctx.save();
     ctx.letterSpacing = '0px';
     ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-    ctx.font = "700 11px Barlow Semi Condensed, sans-serif";
+    ctx.font = "700 10.5px Barlow Semi Condensed, sans-serif";
+    ctx.letterSpacing = '.6px';
 
-    const nameH = 16, subH = sub ? 10 : 0;
-    const w   = Math.max(ctx.measureText(name).width + 20, 46);
+    // plaquinha branca com bolinha de status, como etiqueta de mesa
+    const nome = String(name).toUpperCase();
+    const nameH = 17, subH = sub ? 11 : 0;
+    const w   = Math.max(ctx.measureText(nome).width + 30, 52);
     const h   = nameH + subH;
     const top = bottomY - h;
 
-    ctx.fillStyle = 'rgba(6,8,15,.88)';
-    ISO.rrect(ctx, sx - w / 2, top, w, h, 7); ctx.fill();
-    ctx.strokeStyle = ISO.rgba(color, .6); ctx.lineWidth = 1.2; ctx.stroke();
+    ctx.shadowColor = 'rgba(0,0,0,.18)'; ctx.shadowBlur = 5; ctx.shadowOffsetY = 1.5;
+    ctx.fillStyle = 'rgba(255,255,255,.96)';
+    ISO.rrect(ctx, sx - w / 2, top, w, h, 8); ctx.fill();
+    ctx.shadowColor = 'transparent';
+    ctx.strokeStyle = 'rgba(0,0,0,.1)'; ctx.lineWidth = 1; ctx.stroke();
 
-    ctx.fillStyle = '#eef1fa';
-    ctx.fillText(name, sx, top + nameH / 2 + .5);
+    ctx.fillStyle = color;
+    ctx.beginPath(); ctx.arc(sx - w / 2 + 10, top + nameH / 2, 3.4, 0, 7); ctx.fill();
+    ctx.fillStyle = '#1f2328';
+    ctx.fillText(nome, sx + 6, top + nameH / 2 + .5);
 
     if (sub) {
-      ctx.fillStyle = ISO.rgba(color, .18);
-      ISO.rrect(ctx, sx - w / 2 + 1, top + nameH - 1, w - 2, subH, 5); ctx.fill();
-      ctx.font = "700 8px Barlow Semi Condensed, sans-serif";
-      ctx.fillStyle = ISO.rgba(color, .98);
-      ctx.fillText(sub, sx, top + nameH + subH / 2 - .5);
+      ctx.letterSpacing = '0px';
+      ctx.font = "600 8px Barlow Semi Condensed, sans-serif";
+      ctx.fillStyle = '#6b7280';
+      ctx.fillText(sub, sx, top + nameH + subH / 2 - 1.5);
     }
     ctx.restore();
     return h;
@@ -430,17 +436,17 @@ const AVATAR = (() => {
     const tw = ctx.measureText(txt).width;
     const w = tw + 32, h = 19, x = sx - w / 2, y = bottomY - h;
 
-    ctx.fillStyle = 'rgba(8,10,18,.92)';
+    ctx.fillStyle = 'rgba(255,255,255,.97)';
     ISO.rrect(ctx, x, y, w, h, 9); ctx.fill();
-    ctx.strokeStyle = ISO.rgba(color, .55); ctx.lineWidth = 1.1; ctx.stroke();
+    ctx.strokeStyle = 'rgba(0,0,0,.12)'; ctx.lineWidth = 1; ctx.stroke();
     ctx.beginPath();
     ctx.moveTo(sx - 3.4, y + h - 1); ctx.lineTo(sx, y + h + 4); ctx.lineTo(sx + 3.4, y + h - 1);
-    ctx.fillStyle = 'rgba(8,10,18,.92)'; ctx.fill();
+    ctx.fillStyle = 'rgba(255,255,255,.97)'; ctx.fill();
 
     ctx.textAlign = 'left'; ctx.textBaseline = 'middle';
     ctx.font = "11px sans-serif"; ctx.fillText(emoji, x + 8, y + h / 2);
     ctx.font = "600 10px Barlow Semi Condensed, sans-serif";
-    ctx.fillStyle = ISO.rgba(color, .95);
+    ctx.fillStyle = '#2b2f36';
     ctx.fillText(txt, x + 23, y + h / 2 + .5);
     ctx.restore();
     return h + 4;
