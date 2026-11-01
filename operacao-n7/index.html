@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Operação N7 · Escritório N7 Ecom</title>
+<link rel="icon" type="image/svg+xml" href="logo-mark.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<canvas id="scene"></canvas>
+<div class="vignette"></div>
+
+<header class="hud top">
+  <div class="brand">
+    <img src="logo-mark.svg" alt="N7" width="44" height="44">
+    <div>
+      <b>N7 ECOM</b>
+      <span>Operação N7 · Escritório</span>
+    </div>
+  </div>
+  <nav id="tabs" aria-label="Salas">
+    <button data-room="chefe" class="on">👑 Sala do Chefe</button>
+    <button data-room="func">💻 Funcionários</button>
+    <button data-room="reuniao">📊 Reunião</button>
+    <button data-room="jogos">🎮 Jogos</button>
+  </nav>
+  <div class="chips">
+    <i style="--c:#ffe600">Mercado Livre</i>
+    <i style="--c:#ee4d2d">Shopee</i>
+    <i style="--c:#0086ff">Magalu</i>
+    <i style="--c:#ff9900">Amazon</i>
+  </div>
+</header>
+
+<div id="roomTitle" class="hud"><b id="rtName">Sala do Chefe</b><span id="rtSub"></span></div>
+
+<footer class="hud bottom">
+  <span class="hint">🖱️ Clique no chão para andar · clique nos monitores e nas portas</span>
+  <span class="grow"></span>
+  <span id="online">● 0 online</span>
+  <span id="clock">--:--</span>
+  <button id="zin" title="Aproximar">＋</button>
+  <button id="zout" title="Afastar">－</button>
+</footer>
+
+<div id="modal" hidden>
+  <div class="win">
+    <div class="winbar">
+      <span class="url">🖥️ Monitor · Operação N7</span>
+      <button id="mclose" aria-label="Fechar">✕</button>
+    </div>
+    <canvas id="mlbig" width="960" height="600"></canvas>
+    <div class="winfoot">
+      <p>O Mercado Livre não permite ser exibido dentro de outra página, então o monitor mostra uma réplica estilizada. O botão abre o site de verdade.</p>
+      <a href="https://www.mercadolivre.com.br" target="_blank" rel="noopener noreferrer">Abrir mercadolivre.com.br ↗</a>
+    </div>
+  </div>
+</div>
+
+<script src="office.js"></script>
+</body>
+</html>
